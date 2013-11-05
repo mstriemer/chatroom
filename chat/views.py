@@ -27,7 +27,7 @@ def room_messages(request, room_slug):
     message_attrs = json.loads(request.body.decode('utf-8'))
     print(message_attrs)
     message = room.message_set.create(**message_attrs)
-    return HttpResponse({
+    return HttpResponse(json.dumps({
             'sender': message.sender,
             'text': message.text,
-        }, content_type='application/json')
+        }), content_type='application/json')

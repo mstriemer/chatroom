@@ -1,4 +1,4 @@
-define(['x-tag-core', 'x-tag-toggle'], function (xtag) {
+define(['x-tag-core'], function (xtag) {
     var ChatRoomPrototype = Object.create(HTMLElement.prototype);
     ChatRoomPrototype.render = function () {
     };
@@ -55,11 +55,16 @@ define(['x-tag-core', 'x-tag-toggle'], function (xtag) {
         var self = this;
         this.formEl.addEventListener('submit', function (e) {
             e.preventDefault();
-            $.post(e.target.action, JSON.stringify({
+            var sendEvent = new CustomEvent('send-chat-room-message', {
+                bubbles: true
+            });
+            sendEvent.messageUrl = e.target.action;
+            sendEvent.message = {
                 sender: self.senderEl.value,
                 text: self.textEl.value,
-            }), function () {}, 'json');
+            };
             self.textEl.value = '';
+            self.dispatchEvent(sendEvent);
         });
     };
 
