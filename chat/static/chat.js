@@ -1,15 +1,4 @@
 define(['x-tag-core', 'x-tag-toggle'], function (xtag) {
-    var ChatRoom, ChatRoomMessage;
-
-    $.getJSON('/c/one/')
-        .done((data) => {
-            data.messages.forEach((message) => {
-                var e = new CustomEvent('new-chat-room-message');
-                e.message = message;
-                document.dispatchEvent(e);
-            });
-        });
-
     var ChatRoomPrototype = Object.create(HTMLElement.prototype);
     ChatRoomPrototype.render = function () {
     };
@@ -18,11 +7,15 @@ define(['x-tag-core', 'x-tag-toggle'], function (xtag) {
                        + '<div class="messages"></div>';
         this.headerEl = this.querySelector('h1');
         this.messagesEl = this.querySelector('.messages');
-        JSON.parse(this.getAttribute('messages')).forEach((message) => {
-            this.addMessage(message);
+        var self = this;
+        JSON.parse(this.getAttribute('messages')).forEach(function (message) {
+            self.addMessage(message);
         });
-        document.addEventListener('new-chat-room-message', (e) => {
-            this.addMessage(e.message);
+        var inputs = document.createElement('chat-room-inputs');
+        inputs.setAttribute('url', this.getAttribute('url'));
+        this.appendChild(inputs);
+        document.addEventListener('new-chat-room-message', function (e) {
+            self.addMessage(e.message);
         });
     };
     ChatRoomPrototype.addMessage = function (message) {
@@ -49,12 +42,36 @@ define(['x-tag-core', 'x-tag-toggle'], function (xtag) {
     ChatRoomMessagePrototype.createdCallback = ChatRoomMessagePrototype.render;
     ChatRoomMessagePrototype.attributeChangedCallback = ChatRoomMessagePrototype.render;
 
+    ChatRoomInputsPrototype = Object.create(HTMLElement.prototype);
+    ChatRoomInputsPrototype.createdCallback = function () {
+        this.innerHTML = '<form action="' + this.getAttribute('url') + 'messages/" method="post">'
+                       +    '<input type="text" name="sender" placeholder="Your name">'
+                       +    '<input type="text" name="text" placeholder="Type your message">'
+                       +    '<button type="submit">Send</button>'
+                       + '</form>';
+        this.formEl = this.querySelector('form');
+        this.senderEl = this.querySelector('input[name="sender"]');
+        this.textEl = this.querySelector('input[name="text"]');
+        var self = this;
+        this.formEl.addEventListener('submit', function (e) {
+            e.preventDefault();
+            $.post(e.target.action, JSON.stringify({
+                sender: self.senderEl.value,
+                text: self.textEl.value,
+            }), function () {}, 'json');
+            self.textEl.value = '';
+        });
+    };
+
     document.addEventListener('WebComponentsReady', function () {
-        ChatRoom = document.register('chat-room', {
+        document.register('chat-room', {
             prototype: ChatRoomPrototype
         });
-        ChatRoomMessage = document.register('chat-room-message', {
+        document.register('chat-room-message', {
             prototype: ChatRoomMessagePrototype
+        });
+        document.register('chat-room-inputs', {
+            prototype: ChatRoomInputsPrototype
         });
         setTimeout(function () {
             document.querySelector('chat-room').setAttribute('name', 'what');
