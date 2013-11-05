@@ -1,0 +1,29 @@
+{
+  "name": "x-tag-toggle",
+  "description": "",
+  "version": "0.2.5",
+  "keywords": [
+    "web-components",
+    "x-tag"
+  ],
+  "main": [
+    "src/toggle.js",
+    "src/toggle.css",
+    "src/toggle.styl"
+  ],
+  "dependencies": {
+    "x-tag-core": "*",
+    "brick-common": "*"
+  },
+  "homepage": "https://github.com/x-tag/toggle",
+  "_release": "0.2.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.2.5",
+    "commit": "bba12f3b77664446489651c68451dd26668ee10d"
+  },
+  "_source": "git://github.com/x-tag/toggle.git",
+  "_target": "~0.2.5",
+  "_originalSource": "x-tag-toggle",
+  "_direct": true
+}

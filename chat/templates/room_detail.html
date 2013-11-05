@@ -1,0 +1,12 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Chatroom</title>
+        <script src="/static/jquery/jquery.js"></script>
+        <script src="/static/requirejs/require.js" data-main="/static/main.js"></script>
+        <link rel="import" href="/static/templates/chat_room.html">
+    </head>
+    <body>
+        <chat-room name="{{room.name}}" slug="{{room.slug}}" url="{% url 'chat.views.room_detail' room_slug=room.slug %}" messages='[{"sender": "Bob", "text": "Hi!"}]'></chat-room>
+    </body>
+</html>

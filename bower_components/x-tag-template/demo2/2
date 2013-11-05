@@ -1,0 +1,77 @@
+Web Component model using declaritive syntax and a template imported via HTMLimports
+
+<element name="app-todo" constructor="Todo">
+  <template>
+    <div class="task"></div>
+    <input type="checkbox" class="completed">
+  </template>
+  <script>
+
+    if (this != window){
+
+      var content = this.querySelector('template').content;
+
+      xtag.register(this, {
+        lifecycle: {
+          created: function{
+            // set innerHTML with template content
+            this.innerHTML = content.cloneNode(true);
+
+            // set initial values from attributes
+            this.task = this.task;
+            this.completed = this.completed;
+          }
+        },
+        events: {
+          'change:delegate(.completed)': function(e){
+            e.targetElement.completed = this.hasAttribute('checked');
+          }
+        },
+        accessors: {
+          task: {
+            attribute: {},
+            set: function(value){
+              this.querySelector('.task').innerHTML = value;
+            }
+          },
+          completed: {
+            attribute: {},
+            set: function(value){
+              var completed = this.querySelector('.completed');
+              if (value) {
+                completed.setAttribute('checked','') ;
+              } else {
+                completed.removeAttribute('checked');
+              }
+            },
+            get: function(){
+              return (this.getAttribute('completed') == "true");
+            }
+          }
+        }
+      });
+    }
+
+  </script>
+</element>
+
+
+
+var todo = new Todo();   // this is an html element
+todo.task = 'Hello';
+todo.setAttribute('completed', true);
+OR
+todo.completed = true;
+
+// throw it into the DOM, but it doesn't have a visual representation yet
+body.appendChild(todo);
+
+<body>
+  <app-todo task="Hello" completed="true">
+    <div class="task">Hello</div>
+    <input type="checkbox" checked class="completed">
+  </app-todo>
+</body>
+
+
+Main disadvantage is that the model is bound directly to a visual representation.

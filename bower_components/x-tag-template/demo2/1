@@ -1,0 +1,77 @@
+Simple Web Component Model using pure JS
+
+
+var Todo = xtag.register('app-todo', {
+  lifecycle: {
+    created: function(){
+      this.innerHTML = '<div class="task"></div><input type="checkbox" class="completed">';// run setters so innerHTML is populated
+
+      // set initial values from attributes
+      this.task = this.task;
+      this.completed = this.completed;
+    }
+  },
+  events: {
+    'change:delegate(.completed)': function(e){
+      e.targetElement.completed = this.hasAttribute('checked');
+    }
+  },
+  accessors: {
+    task: {
+      attribute: {},
+      set: function(value){
+        this.querySelector('.task').innerHTML = value;
+      }
+    },
+    completed: {
+      attribute: {},
+      set: function(value){
+        var completed = this.querySelector('.completed');
+        if (value) {
+          completed.setAttribute('checked','') ;
+        } else {
+          completed.removeAttribute('checked');
+        }
+      },
+      get: function(){
+        return (this.getAttribute('completed') == "true");
+      }
+    },
+    date: {
+      get: function(){
+        return this.xtag.data.date;
+      },
+      set: function(value){
+        this.xtag.data.date = value;
+      }
+    }
+  },
+  methods:{
+    blah: function(){
+
+    }
+  }
+});
+
+
+var todo2 = document.createElement('app-todo');
+
+var todo = new Todo();   // this is an html element
+todo.task = 'Hello World';
+todo.setAttribute('completed', true);
+
+
+
+// throw it into the DOM, but it doesn't have a visual representation yet
+document.body.appendChild(todo);
+
+<body>
+  <app-todo task="Hello World" completed="true">
+    <div class="task">Hello</div>
+    <input type="checkbox" checked class="completed">
+  </app-todo>
+</body>
+
+
+
+

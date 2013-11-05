@@ -1,0 +1,26 @@
+{
+  "name": "Template",
+  "description": "",
+  "keywords": [
+    "web-components",
+    "x-tag"
+  ],
+  "main": [
+    "src/template.js",
+    "src/template.css"
+  ],
+  "dependencies": {
+    "x-tag-core": "*"
+  },
+  "homepage": "https://github.com/x-tag/template",
+  "_release": "master",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "6edb8ae68987757864b5911065a500e3413f9c04"
+  },
+  "_source": "git://github.com/x-tag/template.git",
+  "_target": "*",
+  "_originalSource": "x-tag-template",
+  "_direct": true
+}

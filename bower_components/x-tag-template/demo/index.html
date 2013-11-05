@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Template - X-Tag</title>
+    <link rel="stylesheet" type="text/css" href="x-tag-components.css"/>
+    <link rel="stylesheet" type="text/css" href="../src/template.css"/>
+
+    <script type="text/javascript" src="x-tag-components.js"></script>
+    <script type="text/javascript" src="../src/template.js"></script>
+
+    <link rel="import" href="template_import.html" />
+
+  </head>
+
+<body>
+
+  <div>
+    <button onclick="switchTemplate('comment')">Comment Template</button>
+    <button onclick="switchTemplate('fancy-comment')">Fancy Comment Template</button>
+  </div>
+
+  <x-comment template="comment"
+    username="GomerPile"
+    firstName="Gomer"
+    lastName="Pile"
+    text="Hi, hows the weather?"
+    postDate="1370992364926">
+  </x-comment>
+
+<x-comment template="comment"
+    username="GomerPile"
+    firstName="Gomer"
+    lastName="Pile"
+    text="Hi, hows the weather?"
+    postDate="1370992364926">
+  </x-comment>
+  <x-comment template="comment"
+    username="GomerPile"
+    firstName="Gomer"
+    lastName="Pile"
+    text="Hi, hows the weather?"
+    postDate="1370992364926">
+  </x-comment>
+  <x-comment template="comment"
+    username="GomerPile"
+    firstName="Gomer"
+    lastName="Pile"
+    text="Hi, hows the weather?"
+    postDate="1370992364926">
+  </x-comment>
+  <x-comment template="comment"
+    username="GomerPile"
+    firstName="Gomer"
+    lastName="Pile"
+    text="Hi, hows the weather?"
+    postDate="1370992364926">
+  </x-comment>
+
+
+</body>
+
+<script type="text/javascript">
+
+  function switchTemplate(name){
+    xtag.query(document, 'x-comment').forEach(function(comment){
+      comment.template = name;
+    });
+  }
+
+  xtag.register('x-comment',{
+    accessors: {
+      username: {
+        attribute: {}
+      },
+      firstName: {
+        attribute: {}
+      },
+      lastName: {
+        attribute: {}
+      },
+      text: {
+        attribute: {}
+      },
+      postDate: {
+        attribute: {}
+      }
+    }
+  });
+
+  document.addEventListener('DOMComponentsLoaded', function(){
+    console.log('loaded', XTemplate);
+    XTemplate.mapProperties('comment', 'x-comment', {
+        'user': 'username',
+        'user-hover': {
+          key: 'firstName',
+          action: function(value){
+            return this.firstName + " " + this.lastName;
+          }
+        },
+        'comment':'text',
+        'date': {
+          key: 'postDate',
+          action: function(value){
+            return new Date(Number(value)).toLocaleDateString();
+          }
+        }
+    });
+
+  });
+
+</script>
+
+</html>

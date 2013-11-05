@@ -1,0 +1,26 @@
+{
+  "name": "x-tag-core",
+  "description": "X-Tag core library for creating custom as defined by the w3c Web Components spec.",
+  "version": "0.8.13",
+  "keywords": [
+    "web-components",
+    "element",
+    "custom",
+    "core",
+    "x-tag"
+  ],
+  "main": [
+    "lib/web-components-polyfills.js",
+    "src/core.js"
+  ],
+  "homepage": "https://github.com/x-tag/core",
+  "_release": "0.8.13",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.8.13",
+    "commit": "a469832cfa65cfde4c20e2bce704e42f69980d99"
+  },
+  "_source": "git://github.com/x-tag/core.git",
+  "_target": "*",
+  "_originalSource": "x-tag-core"
+}
