@@ -1,6 +1,15 @@
 define(['x-tag-core', 'x-tag-toggle'], function (xtag) {
     var ChatRoom, ChatRoomMessage;
 
+    $.getJSON('/c/one/')
+        .done((data) => {
+            data.messages.forEach((message) => {
+                var e = new CustomEvent('new-chat-room-message');
+                e.message = message;
+                document.dispatchEvent(e);
+            });
+        });
+
     var ChatRoomPrototype = Object.create(HTMLElement.prototype);
     ChatRoomPrototype.render = function () {
     };
@@ -12,12 +21,9 @@ define(['x-tag-core', 'x-tag-toggle'], function (xtag) {
         JSON.parse(this.getAttribute('messages')).forEach((message) => {
             this.addMessage(message);
         });
-        $.getJSON(this.getAttribute('url'))
-            .done((data) => {
-                data.messages.forEach((message) => {
-                    this.addMessage(message);
-                });
-            });
+        document.addEventListener('new-chat-room-message', (e) => {
+            this.addMessage(e.message);
+        });
     };
     ChatRoomPrototype.addMessage = function (message) {
         var messageEl = document.createElement('chat-room-message');
@@ -25,8 +31,12 @@ define(['x-tag-core', 'x-tag-toggle'], function (xtag) {
         messageEl.setAttribute('text', message.text);
         this.messagesEl.appendChild(messageEl);
     };
-    ChatRoomPrototype.attributeChangedCallback = function () {
-        console.log(arguments);
+    ChatRoomPrototype.nameChanged = function () {
+        this.headerEl.textContent = this.getAttribute('name');
+    };
+    ChatRoomPrototype.attributeChangedCallback = function (attribute, oldValue) {
+        var updater = this[attribute + 'Changed'];
+        if (updater) updater.call(this);
     };
 
     var ChatRoomMessagePrototype = Object.create(HTMLElement.prototype);
